@@ -1,6 +1,8 @@
 package com.example.myapplication;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.widget.Button;
@@ -9,13 +11,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class QualityCheckActivity extends AppCompatActivity {
 
+    private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
     private EditText editWidth, editWaste;
     private String batchId;
 
@@ -39,9 +45,17 @@ public class QualityCheckActivity extends AppCompatActivity {
         textBatch.setText("Партия: " + batchId);
 
         btnTakePhoto.setOnClickListener(v -> {
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            if (intent.resolveActivity(getPackageManager()) != null) {
-                startActivityForResult(intent, 100);
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                    != PackageManager.PERMISSION_GRANTED) {
+                // Запросить разрешение
+                ActivityCompat.requestPermissions(
+                        this,
+                        new String[]{Manifest.permission.CAMERA},
+                        CAMERA_PERMISSION_REQUEST_CODE
+                );
+            } else {
+                // Разрешение уже есть — можно открывать камеру
+                openCamera();
             }
         });
 
@@ -61,6 +75,26 @@ public class QualityCheckActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100 && resultCode == RESULT_OK) {
             Toast.makeText(this, "Фото сохранено", Toast.LENGTH_SHORT).show();
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 100) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openCamera();
+            } else {
+                Toast.makeText(this, "Камера недоступна без разрешения", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    private void openCamera() {
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(cameraIntent, CAMERA_PERMISSION_REQUEST_CODE);
+        }
+        else {
+            Toast.makeText(this, "Камера не поддерживается", Toast.LENGTH_SHORT).show();
         }
     }
 }
