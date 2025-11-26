@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/quality"
+    android:background="@color/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".QualityCheckActivity"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Контроль качества пленки"
+            android:textColor="@color/main"
+            android:textSize="20sp"
+            android:fontFamily="sans-serif"
+            android:layout_marginBottom="24dp" />
+
+        <TextView
+            android:id="@+id/textBatch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Партия: BATCH-2024-0001"
+            android:textSize="16sp"
+            android:fontFamily="sans-serif"
+            android:layout_marginBottom="24dp" />
+
+        <EditText
+            android:id="@+id/editWidth"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:hint="Ширина пленки (мм)"
+            android:inputType="numberDecimal"
+            android:background="@android:color/white"
+            android:padding="10dp"
+            android:layout_marginBottom="15dp" />
+
+        <EditText
+            android:id="@+id/editWaste"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:hint="Обрезки (кг)"
+            android:inputType="numberDecimal"
+            android:background="@android:color/white"
+            android:padding="10dp"
+            android:layout_marginBottom="24dp" />
+
+        <Button
+            android:id="@+id/btnTakePhoto"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Сделать фото края"
+            android:textColor="@android:color/white"
+            android:fontFamily="sans-serif"
+            android:layout_marginBottom="15dp" />
+
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Отправить данные"
+            android:textColor="@android:color/white"
+            android:fontFamily="sans-serif" />
+    </LinearLayout>
+</ScrollView>
